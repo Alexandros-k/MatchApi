@@ -5,17 +5,4 @@ public enum Sport{
     Basketball,
     Tennis,
     Baseball;
-/*
-
-    int sportId;
-
-    Sport(int sportId) {
-        this.sportId = sportId;
-    }
-
-    int getSportId() {
-        return sportId;
-    }
-*/
-
 }
