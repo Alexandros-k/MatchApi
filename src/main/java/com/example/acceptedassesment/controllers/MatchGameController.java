@@ -31,7 +31,7 @@ public class MatchGameController {
         return matchGameService.getAllMatchGames();
     }
 
-    @PutMapping("/matchs/{id}")
+    @PutMapping("/matches/{id}")
     public ResponseEntity updateMatchGame(@RequestBody MatchGame newMatch, @PathVariable(value ="id") int id){
      ResponseEntity re = matchGameService.updateMatchGame(newMatch,id);
         return re;
