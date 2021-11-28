@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -89,25 +87,7 @@ public class MatchOddsService {
         return new ResponseEntity<MatchOdds>(newMatchOdds, HttpStatus.OK);
     }
 
-    @Transactional
-    public ResponseEntity removeMatchOdd(int matchGameId, int id) {
-        MatchGame mg = matchGameRepository.findById(matchGameId).get();
-        MatchOdds m1 = null;
-        for (MatchOdds matchOdd : mg.getMatchOdds()) {
-            if (matchOdd.getId() == id) {
-                try {
-                    m1 = matchOddsRepository.findById(id).get();
-                } catch (Exception e) {
-                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-                }
-                matchOddsRepository.delete(m1);
-                return new ResponseEntity<String>("MatchOdd is deleted", HttpStatus.CREATED);
-            }
-        }
-        return new ResponseEntity(HttpStatus.NOT_FOUND);
-    }
-
-/*    @Transactional
+   @Transactional
     public ResponseEntity removeMatchOdd(int id) {
         MatchOdds mo = null;
         try {
@@ -117,6 +97,6 @@ public class MatchOddsService {
         }
         matchOddsRepository.delete(mo);
         return new ResponseEntity<String>("MatchOdd is deleted", HttpStatus.CREATED);
-    }*/
+    }
 
 }

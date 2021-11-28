@@ -31,8 +31,8 @@ public class MatchOddsController {
     }
 
     @DeleteMapping("/matches/{match_id}/odds/{id}")
-    public ResponseEntity deleteMatchOdds(@PathVariable(value ="match_id") int match_id,@PathVariable(value = "id") int id){
-        ResponseEntity re = matchOddsService.removeMatchOdd(match_id,id);
+    public ResponseEntity deleteMatchOdds(@PathVariable(value = "id") int id){
+        ResponseEntity re = matchOddsService.removeMatchOdd(id);
         return re;
     }
 }
