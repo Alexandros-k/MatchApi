@@ -5,7 +5,6 @@ import com.example.acceptedassesment.services.MatchOddsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 public class MatchOddsController {
@@ -17,11 +16,11 @@ public class MatchOddsController {
     public ResponseEntity createMatchOdds(@RequestBody MatchOdds matchOdds, @PathVariable(value ="matchGame_Id") int matchGame_Id) {
         ResponseEntity re = matchOddsService.saveMatchOdds(matchOdds,matchGame_Id);
         return re;
-    }//TODO error handling if no Match Exists for this Matchodd
+    }
 
-    @GetMapping("/odds/{id}")
-    public MatchOdds getMatchOddsById(@PathVariable(value = "id") int id) {
-        MatchOdds matchOdds = matchOddsService.findMatchOddsById(id);
+    @GetMapping("/matches/{match_id}/odds/{id}")
+    public MatchOdds getMatchOddsById(@PathVariable(value ="match_id") int match_id,@PathVariable(value = "id") int id) {
+        MatchOdds matchOdds = matchOddsService.findMatchOddsById(match_id,id);
         return matchOdds;
     }
 
@@ -31,9 +30,9 @@ public class MatchOddsController {
         return re;
     }
 
-    @DeleteMapping("/odds/{id}")
-    public ResponseEntity deleteMatchOdds(@PathVariable int id){
-        ResponseEntity re = matchOddsService.removeMatchOdd(id);
+    @DeleteMapping("/matches/{match_id}/odds/{id}")
+    public ResponseEntity deleteMatchOdds(@PathVariable(value ="match_id") int match_id,@PathVariable(value = "id") int id){
+        ResponseEntity re = matchOddsService.removeMatchOdd(match_id,id);
         return re;
     }
 }

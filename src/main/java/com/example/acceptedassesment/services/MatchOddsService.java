@@ -28,7 +28,7 @@ public class MatchOddsService {
         AddResponse ar = new AddResponse();
         if(!checkMatchOddAlreadyExist(matchOdds.getId())) {
             matchGameRepository.findById(matchGameId).map(matchGame -> {
-                        matchOdds.setMatchGame(matchGame);
+                        matchOdds.setMatchGame(matchGame.getId());
                 matchOddsRepository.save(matchOdds);
                 ar.setMsg("Success MatchOdds are Added");
                 ar.setId(matchOdds.getId());
@@ -49,13 +49,19 @@ public class MatchOddsService {
         } else return false;
     }
 
-    public MatchOdds findMatchOddsById(int id) {
+    public MatchOdds findMatchOddsById(int match_id, int id) {
         MatchOdds matchOdds = null;
-        try {
+        MatchGame mg = matchGameRepository.findById(match_id).get();
+        for (MatchOdds matchOdd : mg.getMatchOdds()) {
+            if (matchOdd.getId() == id) {
+              return matchOddsRepository.findById(id).get();
+            }
+        }
+      /*  try {
             matchOdds = matchOddsRepository.findById(id).get();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+        }*/
         return matchOdds;
     }
 
@@ -67,7 +73,7 @@ public class MatchOddsService {
                         matchOdds.setId(newMatchOdds.getId());
                         matchOdds.setSpecifier(newMatchOdds.getSpecifier());
                         matchOdds.setOdd(newMatchOdds.getOdd());
-                        matchOdds.setMatchGame(mg.get());
+                        matchOdds.setMatchGame(mg.get().getId());
                         matchOddsRepository.save(matchOdds);
                         return new ResponseEntity<MatchOdds>(matchOdds, HttpStatus.OK);
                     })
@@ -84,6 +90,24 @@ public class MatchOddsService {
     }
 
     @Transactional
+    public ResponseEntity removeMatchOdd(int matchGameId, int id) {
+        MatchGame mg = matchGameRepository.findById(matchGameId).get();
+        MatchOdds m1 = null;
+        for (MatchOdds matchOdd : mg.getMatchOdds()) {
+            if (matchOdd.getId() == id) {
+                try {
+                    m1 = matchOddsRepository.findById(id).get();
+                } catch (Exception e) {
+                    throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                }
+                matchOddsRepository.delete(m1);
+                return new ResponseEntity<String>("MatchOdd is deleted", HttpStatus.CREATED);
+            }
+        }
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+/*    @Transactional
     public ResponseEntity removeMatchOdd(int id) {
         MatchOdds mo = null;
         try {
@@ -93,6 +117,6 @@ public class MatchOddsService {
         }
         matchOddsRepository.delete(mo);
         return new ResponseEntity<String>("MatchOdd is deleted", HttpStatus.CREATED);
-    }
+    }*/
 
 }

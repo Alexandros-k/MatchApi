@@ -19,13 +19,8 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class MatchGame {
     @Id
-    /*@GeneratedValue(strategy = GenerationType.AUTO)*/
     int id;
     String description;
     LocalDate match_date;
